@@ -2,10 +2,10 @@ package com.zohar.blog.service;
 
 import com.zohar.blog.mapper.ArticleMapper;
 import com.zohar.blog.model.Article;
-import com.zohar.blog.util.ModelUtil;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,24 +31,24 @@ public class ArticleServiceImpl implements ArticleService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("url", url);
         Article article = articleMapper.selectOneByExample(example);
-        int updateRes;
+        int res;
         if (article == null) {
-            article = new Article(null, title, url, 1, ModelUtil.currentTime(), ModelUtil.currentTime());
-            updateRes = articleMapper.insert(article);
+            article = new Article(null, title, url, 1, new Date(), new Date());
+            res = articleMapper.insert(article);
         } else {
             Integer frequency = article.getFrequency() + 1;
             article.setFrequency(frequency);
-            article.setUpdateTime(ModelUtil.currentTime());
-            updateRes = articleMapper.updateByExample(article, example);
+            article.setUpdateTime(new Date());
+            res = articleMapper.updateByExample(article, example);
         }
-        if (updateRes != -1) {
+        if (res != -1) {
             Example summaryRecord = new Example(Article.class);
             Example.Criteria summaryRecordCriteria = summaryRecord.createCriteria();
             summaryRecordCriteria.andEqualTo("id", 1);
             Article siteData = articleMapper.selectOneByExample(summaryRecord);
             if (siteData != null) {
                 siteData.setFrequency(siteData.getFrequency() + 1);
-                siteData.setUpdateTime(ModelUtil.currentTime());
+                siteData.setUpdateTime(new Date());
                 articleMapper.updateByExample(siteData, summaryRecord);
             }
         }
@@ -71,7 +71,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Integer getAllFrequency() {
-        Article siteData = articleMapper.selectOne(new Article(1, null, null, null, null, null));
+        Article siteData = articleMapper.selectByPrimaryKey(1);
         return siteData == null ? -1 : siteData.getFrequency();
     }
 }

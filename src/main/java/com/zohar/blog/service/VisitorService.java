@@ -22,6 +22,7 @@ public interface VisitorService {
 
     /**
      * 更新访客信息
+     * 访客记录的唯一性由：浏览器指纹 + 用户 IP 确定，每个访客 1 min 内仅能更新一次访客记录
      *
      * @param fingerprint 访客指纹
      * @param ip          访客 IP

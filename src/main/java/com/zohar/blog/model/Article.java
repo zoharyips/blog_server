@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * articles
@@ -16,6 +18,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Article implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    @Id
     private Integer id;
     /**
      * 文章标题
@@ -32,9 +36,9 @@ public class Article implements Serializable {
     /**
      * 首次被访问时间
      */
-    private String createTime;
+    private Date createTime;
     /**
      * 最近被访问时间
      */
-    private String updateTime;
+    private Date updateTime;
 }

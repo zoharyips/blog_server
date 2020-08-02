@@ -2,10 +2,8 @@ package com.zohar.blog.controller;
 
 import com.zohar.blog.model.Visitor;
 import com.zohar.blog.service.VisitorService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,8 +16,8 @@ import java.util.List;
  * @author zohar
  **/
 @RestController
-@RequestMapping(path = "/visitor")
-@CrossOrigin(origins = "*")
+@RequestMapping(path = "visitor")
+@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET})
 public class VisitorController {
 
     private final VisitorService visitorService;
@@ -33,7 +31,7 @@ public class VisitorController {
         return visitorService.getVisitorList();
     }
 
-    @GetMapping("/frequency")
+    @GetMapping("frequency")
     public Integer frequency(String fingerprint) {
         return visitorService.frequency(fingerprint);
     }

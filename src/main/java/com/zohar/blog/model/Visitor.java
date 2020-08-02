@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,9 +17,14 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Visitor implements Serializable {
-    public static final int UPDATE_INTERVAL = 180000;
+    /**
+     * 同一用户在该时间间隔内重复访问不计入统计次数：1 min
+     */
+    public static final int UPDATE_INTERVAL = 60000;
 
     private static final long serialVersionUID = 1L;
+
+    @Id
     private Integer id;
     /**
      * 用户指纹

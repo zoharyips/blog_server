@@ -3,9 +3,13 @@ package com.zohar.blog.controller;
 import com.zohar.blog.model.Article;
 import com.zohar.blog.service.ArticleService;
 import com.zohar.blog.service.VisitorService;
+import com.zohar.blog.util.WebServletUtil;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.*;
 
 /**
  * Project:      com.zohar.blog.controller
@@ -16,8 +20,8 @@ import java.util.List;
  * @author zohar
  **/
 @RestController
-@RequestMapping("/article")
-@CrossOrigin(origins = "*")
+@RequestMapping("article")
+@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET})
 public class ArticleController {
 
     private final ArticleService articleService;
@@ -33,14 +37,18 @@ public class ArticleController {
         return articleService.getArticleList();
     }
 
-    @GetMapping(path = "/frequency")
+    @GetMapping(path = "frequency")
     public Integer allFrequency() {
         return articleService.getAllFrequency();
     }
 
-    @PostMapping(path = "/frequency")
-    public Integer incrementFrequency(String url, String title, String fingerprint, String ip) {
-        Boolean res = visitorService.incrementFrequency(fingerprint, ip);
-        return res ? articleService.incrementFrequency(title, url) : articleService.getFrequency(url);
+    @PostMapping(path = "frequency")
+    public Integer incrementFrequency(HttpServletRequest request) {
+        String ip = WebServletUtil.getIP(request);
+        String fingerprint = request.getParameter("fingerprint");
+        String title       = request.getParameter("title");
+        String url         = request.getParameter("url");
+        visitorService.incrementFrequency(fingerprint, ip);
+        return articleService.incrementFrequency(title, url);
     }
 }
