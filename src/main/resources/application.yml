@@ -6,9 +6,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.102.149.103:3306/zohar_blog?useUnicode=true&characterEncoding=utf-8&useSSL=false
-    username: zohar
-    password: asd123000
+    url: jdbc:mysql://163.177.151.109:3306/zohar_blog?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: udiab
+    password: mocnefihsa
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       connection-timeout: 30000
